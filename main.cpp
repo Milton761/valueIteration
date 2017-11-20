@@ -5,11 +5,21 @@
 using namespace std;
 
 
-int main()
+int main(int argc, char* argv[])
 {
 	
 
-	MDP mdp = loadNet("navigation01.net");
+
+
+	string file_path = argv[1];
+	error e = atof(argv[2]);
+
+
+
+	MDP mdp = loadNet(file_path);
+
+	
+
 
 
 	vector<state> S = get<0>(mdp);
@@ -20,19 +30,26 @@ int main()
 	Sucessors Su = get<5>(mdp);
 
 
+	auto start = std::chrono::system_clock::now();
+	auto v_p = valueIteration(mdp, e);
+	auto end = std::chrono::system_clock::now();
 
-	auto v_p = valueIteration(mdp, 0.00);
+	std::chrono::duration<double> elapsed_seconds = end-start;
+    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+ 
+    cout<<file_path<<" "<<elapsed_seconds.count()<<endl;
 
 
 	auto V = get<0>(v_p);
 	auto P = get<1>(v_p);
 
+/*
 	cout<<"Policy"<<endl;
 	cout<<"++++++++++++++++++++++++++++"<<endl;
 	for(auto s: S)
 	{
 		cout<<s<<" -> "<<P[s]<<endl;
 	} 
-
+*/
 	return 0;
 }

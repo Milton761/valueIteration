@@ -11,6 +11,12 @@ using namespace namespace_MDP;
  MDP loadNet(string name_file)
 {
     
+    string cmd = "grep -o -c action " + name_file + " > n_actions.info";
+    system(cmd.c_str());
+
+    ifstream ac("n_actions.info");
+
+
     MDP mdp;
     fstream file(name_file.c_str());
     
@@ -20,7 +26,7 @@ using namespace namespace_MDP;
     cost c;
     probability p;
     
-    
+        
     vector<state> S;
     vector <action> A;
     TransitionF T;
@@ -41,6 +47,7 @@ using namespace namespace_MDP;
     {
         file>>s;
         
+
        // //cout<<s<<endl;
         if(s=="endstates")
             break;
@@ -53,8 +60,17 @@ using namespace namespace_MDP;
         }
     }
     
-    
-    int acts=4;
+    //HERE! SET DEPEND NUMBER OF ACTIONS OF PROBLEMS!!!!!!!<<<<<<<<<<
+    // 4 for NAVIGATION
+    // 5 for TRIANGLE
+
+
+
+
+    int acts;
+
+    ac>>acts;
+    acts = acts/2;
     
     for(int i=0; i<acts ;i++)
     {
